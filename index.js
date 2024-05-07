@@ -1,26 +1,24 @@
-const mergeSortIterative = (arr) => {
-  const merge = (left, right) => {
-    let result = [];
-    let leftIndex = 0;
-    let rightIndex = 0;
-    while (leftIndex < left.length && rightIndex < right.length) {
-      if (left[leftIndex] < right[rightIndex]) {
-        result.push(left[leftIndex]);
-        leftIndex++;
-      } else {
-        result.push(right[rightIndex]);
-        rightIndex++;
+function canFinish(numCourses, prerequisites) {
+  const graph = new Map();
+  const visited = new Array(numCourses).fill(0);
+  for (const [course, prerequisite] of prerequisites) {
+    if (!graph.has(course)) graph.set(course, []);
+    graph.get(course).push(prerequisite);
+  }
+  for (let i = 0; i < numCourses; i++) {
+    if (!dfs(i)) return false;
+  }
+  return true;
+  function dfs(course) {
+    if (visited[course] === 1) return false;
+    if (visited[course] === -1) return true;
+    visited[course] = 1;
+    if (graph.has(course)) {
+      for (const prerequisite of graph.get(course)) {
+        if (!dfs(prerequisite)) return false;
       }
     }
-    return result.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
-  };
-  const mergeSize = 2;
-  for (let i = 0; i < arr.length; i += mergeSize) {
-    for (let j = i; j < arr.length; j += mergeSize) {
-      const left = arr.slice(j, j + mergeSize / 2);
-      const right = arr.slice(j + mergeSize / 2, j + mergeSize);
-      arr.splice(j, mergeSize, ...merge(left, right));
-    }
+    visited[course] = -1;
+    return true;
   }
-  return arr;
-};
+}
