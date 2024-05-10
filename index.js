@@ -1,1 +1,4 @@
-const minN = (arr, n = 1) => [...arr].sort((a, b) => a - b).slice(0, n);
+const intersection = (a, b) => {
+  const s = new Set(b);
+  return a.filter((x) => s.has(x));
+};
