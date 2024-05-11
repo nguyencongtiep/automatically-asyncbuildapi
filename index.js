@@ -1,4 +1,12 @@
-const intersection = (a, b) => {
-  const s = new Set(b);
-  return a.filter((x) => s.has(x));
-};
+function isValidParentheses(s) {
+  const stack = [];
+  const map = { "(": ")", "[": "]", "{": "}" };
+  for (const char of s) {
+    if (char in map) stack.push(char);
+    else {
+      const top = stack.pop();
+      if (map[top] !== char) return false;
+    }
+  }
+  return stack.length === 0;
+}
